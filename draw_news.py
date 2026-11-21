@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Draw 'The World Today' for Saturday 21 November 2026 — dense edition.
 
-One 1024x1024 newspaper-style image: a lead story plus 37 short,
+One 1024x1024 newspaper-style image: a lead story plus 39 short,
 source-tagged stories across seven regions, a world-map panel, a
 markets chart and a UTC timeline strip. Pure stdlib + Pillow.
 Run with `python3 draw_news.py`.
@@ -50,8 +50,11 @@ F_FOOT = font("DejaVuSans.ttf", 11)
 # named outlet; the check mark confirms the story is dated 21 Nov 2026.
 STORIES = [
     ("EUROPE",
-     "Britain and the EU seal a Brexit reset: food trade, carbon markets, "
-     "100,000 youth visas.", "REUTERS"),
+     "Britain and the EU seal a Brexit reset on food trade, carbon "
+     "markets and youth visas.", "REUTERS"),
+    ("EUROPE",
+     "Poland asks NATO for F-35 jets and AWACS planes; no formal "
+     "Article 4 move yet.", "REUTERS"),
     ("EUROPE",
      "Denmark expels Russia's defence attaché over a plot to kill rapper "
      "Kyivstoner.", "REUTERS"),
@@ -59,44 +62,43 @@ STORIES = [
      "Former PM Dominique de Villepin declares his run for France's 2027 "
      "presidency.", "POLLAR"),
     ("EUROPE",
-     "Thousands of Berlin students march against rearmament and fears of "
-     "conscription's return.", "SUMI"),
+     "Thousands of Berlin students march against rearmament and "
+     "conscription fears.", "SUMI"),
     ("EUROPE",
      "German metalworkers launch their first 24-hour strike in eight years "
      "over pay.", "EUROPA EXPRESS"),
     ("EUROPE",
-     "Spain's top court keeps 163,355 newly naturalised citizens off the "
-     "29 Nov voter rolls.", "POLLAR"),
+     "Spain's top court keeps 163,355 new citizens off the 29 Nov voter "
+     "rolls.", "POLLAR"),
     ("MIDDLE EAST",
-     "Saudi defences down three Houthi missiles over Riyadh; the coalition "
-     "struck Hodeidah port.", "REUTERS"),
+     "Saudi defences down three Houthi missiles over Riyadh; one hit a "
+     "tower.", "REUTERS"),
     ("MIDDLE EAST",
-     "Netanyahu presses Trump for a new air campaign on Iran; Trump will "
-     "decide after 1 January.", "APEX WIRE"),
+     "Trump weighs new strikes on Iran; he will decide after 1 January.",
+     "NYT"),
     ("MIDDLE EAST",
      "Iran says diplomacy can still end the war; Trump calls Tehran's terms "
      "unacceptable.", "REUTERS"),
     ("MIDDLE EAST",
-     "Heavy rain floods 70,000 tents in Gaza; WHO says an eight-month-old "
-     "died of hypothermia.", "WHO"),
+     "Heavy rain floods 70,000 tents in Gaza; a baby died of "
+     "hypothermia, WHO says.", "WHO"),
     ("MIDDLE EAST",
-     "Sixteen countries back UK and Australian sanctions on "
-     "settlement-linked entities.", "M. EAST EYE"),
+     "Sixteen nations back UK-Australian sanctions on settlement "
+     "entities.", "M. EAST EYE"),
     ("ASIA",
      "Japan's exports hit a record in October on strong chip-related "
      "demand.", "REUTERS"),
     ("ASIA",
-     "India's core industries output jumped 10.9% in October, led by iron "
-     "ore, coal and power.", "GOVT OF INDIA"),
+     "India's core industries output jumped 10.9% in October.", "GOVT OF INDIA"),
     ("ASIA",
      "Nikhil Gupta is jailed for 19 years over a plot to kill Sikh "
      "separatist Pannun in New York.", "NY COURT"),
     ("ASIA",
-     "Japan triples its joint oil stockpile with Saudi Arabia to 24m "
-     "barrels.", "KILAMBI"),
-    ("ASIA",
      "Myanmar calls the ICJ's Rohingya genocide ruling 'biased' and says "
      "it was unjustly accused.", "KSPEARLS"),
+    ("ASIA",
+     "Mongolia's parliament accepts President Khurelsukh's resignation "
+     "amid a coal-railway graft row.", "REUTERS"),
     ("AMERICAS",
      "Wall Street: the S&P 500 fell 3.7% and the Dow 1.9% on Friday; both "
      "are now in correction.", "REUTERS"),
@@ -107,17 +109,17 @@ STORIES = [
      "Mayor Mamdani plans to close New York's Rikers Island jail by 2032.",
      "REUTERS"),
     ("AMERICAS",
-     "Trump threatens a 'tremendous tax' on US firms building AI data "
-     "centres overseas.", "AP"),
+     "Anthropic debuts on Wall Street at a $2tn valuation, then slides "
+     "9%.", "NYT"),
     ("AMERICAS",
-     "Pentagon releases an eighth tranche of UFO records, with clips from "
-     "2020, 2023, 2026.", "BBC"),
+     "The FBI's criminal database is reportedly hacked amid US outages.",
+     "ONETURN"),
     ("AMERICAS",
-     "Trump calls US flight systems 'ancient' but 'safe'; $50bn sought "
-     "for air traffic control.", "BBC"),
+     "Trump tells Europe to stop funding Ukraine after the Shenzhen "
+     "summit.", "TELEGRAPH"),
     ("AMERICAS",
-     "El Salvador's Bukele registers to run for an unprecedented third "
-     "consecutive term in 2027.", "BREITBART"),
+     "El Salvador's Bukele registers to run for a third term in 2027.",
+     "BREITBART"),
     ("AMERICAS",
      "Tesla opens its first store in Argentina; Model 3 and Y listed from "
      "about $40,000.", "REUTERS"),
@@ -136,14 +138,14 @@ STORIES = [
      "Kenyan cult leader Paul Mackenzie is jailed for 200 years for "
      "murdering 191 people.", "BBC"),
     ("OCEANIA",
-     "Australia, Canada and NZ issue a joint APEC statement on peace and "
-     "international law.", "DFAT"),
+     "Australia, Canada and NZ issue a joint APEC statement on peace.",
+     "DFAT"),
     ("OCEANIA",
-     "India reach 159/1 at stumps on day two against New Zealand; Jaiswal "
-     "85, Rahul fifty.", "EIN"),
+     "India reach 486/4 at stumps on day three against New Zealand; "
+     "Rahul 136, Gill 98, lead 118.", "EIN"),
     ("GLOBAL",
-     "COP31 runs into overtime with no deal; the draft drops fossil fuels "
-     "and a $120bn target.", "REUTERS"),
+     "COP31 runs into overtime with no deal; Ethiopia will host COP32 in "
+     "Addis Ababa.", "REUTERS"),
     ("GLOBAL",
      "Voyager 1 is one light-day from Earth, 26bn km out; its data feed "
      "is silent since 14 Nov.", "NASA"),
@@ -152,13 +154,16 @@ STORIES = [
      "BBC"),
     ("GLOBAL",
      "An experimental pill shrank tumours in 44% of pancreatic cancer "
-     "patients in an early trial.", "REUTERS"),
+     "patients.", "REUTERS"),
     ("GLOBAL",
-     "Russell leads a Mercedes one-two in final Las Vegas GP practice; "
-     "the night race is tonight.", "REUTERS"),
+     "Antonelli is fastest in Las Vegas qualifying, but Verstappen "
+     "takes pole.", "REUTERS"),
     ("GLOBAL",
      "Ramla Ali becomes unified super-bantamweight champion, beating "
      "Mikiah Kreps in Texas.", "BBC"),
+    ("GLOBAL",
+     "Trump, Putin and Xi hail a four-point 'peace declaration' in "
+     "Shenzhen.", "CNN"),
 ]
 
 # Column plan: (regions in order) per column.
@@ -175,8 +180,9 @@ LEAD_DEK = ("NATO chief Mark Rutte flies to Warsaw today after two cruise "
 LEAD_BODY = ("No one was hurt, but PM Donald Tusk called it an “intentional "
              "provocation”: the weapons fell near Nowa Deba, where 11 "
              "nations are holding Exercise Koalicja. Poland has asked NATO "
-             "for more air defences. The barrage fired 110 missiles at "
-             "Kyiv, killing eight and damaging three bridges.")
+             "for F-35 jets and AWACS planes. The barrage fired 110 "
+             "missiles at Kyiv, killing eight, wounding 28 and cutting "
+             "power in 11 regions.")
 
 MARKETS = [("S&P 500", -3.7), ("Dow", -1.9), ("Nasdaq", -5.3),
            ("Nvidia", -13.8), ("Anthropic", -9.1)]
@@ -187,7 +193,7 @@ TIMELINE = [
     ("MORNING", "Rutte in Warsaw; COP31 draft due"),
     ("14:10", "England v New Zealand, Twickenham"),
     ("16:40", "Ireland v South Africa, Dublin"),
-    ("TONIGHT", "Las Vegas GP under lights"),
+    ("TONIGHT", "Verstappen on pole tonight"),
 ]
 
 # Coarse continent outlines (lon, lat) for the schematic world map.
@@ -233,7 +239,7 @@ CONTINENTS = [
 
 # Story locations marked on the map: (lon, lat).
 MARKERS = [(21, 52), (30, 50), (47, 25), (0, 51), (-74, 41), (37, -1),
-           (139, 36), (151, -34)]
+           (139, 36), (151, -34), (106, 47)]
 
 
 def wrap(draw, text, fnt, width):
@@ -286,7 +292,7 @@ def draw_story(draw, x, y, width, text, source):
     if not tag_on_last:
         draw.text((x, y + 1), tag.strip(), font=F_TAG, fill=GREY)
         y += 14
-    return y + 4
+    return y + 2
 
 
 def draw_region(draw, x, y, width, name):
@@ -332,7 +338,7 @@ def main():
     d.text(((W - tw) / 2, 16), title, font=F_MAST, fill=INK)
     rule(d, MARGIN, W - MARGIN, 88, width=1)
     d.text((MARGIN, 94), "SATURDAY 21 NOVEMBER 2026", font=F_DATE, fill=INK)
-    right = "38 stories  ·  7 regions  ·  every story source-checked"
+    right = "39 stories  ·  7 regions  ·  every story source-checked"
     d.text((W - MARGIN - d.textlength(right, font=F_DATE), 94), right,
            font=F_DATE, fill=GREY)
     rule(d, MARGIN, W - MARGIN, 118, width=3)
